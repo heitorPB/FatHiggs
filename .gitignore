@@ -26,3 +26,11 @@
 *.exe
 *.out
 *.app
+
+# tgz
+*.tgz
+*.tar
+*.gz
+
+*.root
+pythia8215
