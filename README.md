@@ -1,27 +1,37 @@
 # FatHiggs
 Home exam for Computing Methods for High Energy Physics at Heslinki University
 
+## Datasets generation
+
+After suffering a lot to discover how to use CMSSW, I gave up and started again
+with plain Pythi8.
+
+### Signal generation
+
+TODO talk about root files structure, smearing, trigger, phase space.
 
 
 ## TODO
 
 ### 1
-[ ] check if higgs width is really changed
-[ ] set crosssection
 
-[ ] smear momenta
-[ ] add trigger
-[ ] limit phase space
-[ ] write root file
-[ ] make pythia print the cross section somewhere
+[ ] check if higgs width is really changed in ex 1.a  
+[ ] set crosssection in ex 1  
 
-[ ] write readme explaining everything
-  [ ] explain structure of code
-  [ ] explain how to run
-  [ ] explain results
-  [ ] general comments
+[ ] smear momenta  
+[ ] add trigger  
+[ ] limit phase space  
+[x] write dataset root file  
+[ ] make pythia print the cross section somewhere (in root file?)  
+[ ] save trigger efficiency somewhere (in root file?)  
 
-[ ] get rid of useless output
+[ ] write readme explaining everything  
+  [ ] explain structure of code  
+  [ ] explain how to run  
+  [ ] explain results  
+  [ ] general comments  
+
+[ ] get rid of useless output  
 
 ## Questions
 

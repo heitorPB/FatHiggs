@@ -4,11 +4,14 @@ PYTHIA8DIR = $(basename $(PYTHIA8FILE))
 
 SIGNAL_SOURCE = signal.cpp
 SIGNAL_OBJS = $(addsuffix .o,$(basename $(SIGNAL_SOURCE)))
+BACKGROUND_SOURCE = background.cpp
+BACKGROUND_OBJS = $(addsuffix .o,$(basename $(BACKGROUND_SOURCE)))
 
-GARBAGE = $(wildcard $(PYTHIA8DIR) $(PYTHIA8FILE) $(SIGNAL_OBJS) signal *out)
+
+GARBAGE = $(wildcard $(PYTHIA8DIR) $(PYTHIA8FILE) $(SIGNAL_OBJS) $(BACKGROUND_OBJS) background signal *out)
 
 
-CFLAGS = -I$(PYTHIA8DIR)/include -Wall -Wextra -O2 -march=native -m64 -ansi -pedantic -fPIC `root-config --cflags`
+CFLAGS = -I$(PYTHIA8DIR)/include -Wall -Wextra --std=c++11 -O2 -march=native -m64 -ansi -pedantic -fPIC `root-config --cflags`
 LFLAGS = $(PYTHIA8DIR)/lib/libpythia8.a -Wl,-rpath $(PYTHIA8DIR)/lib -ldl `root-config --libs --ldflags`
 
 
@@ -19,6 +22,7 @@ LFLAGS = $(PYTHIA8DIR)/lib/libpythia8.a -Wl,-rpath $(PYTHIA8DIR)/lib -ldl `root-
 all: $(PYTHIA8DIR)
 	@echo wololo
 	@$(MAKE) signal
+	@$(MAKE) background
 
 
 $(PYTHIA8DIR):
@@ -29,7 +33,10 @@ $(PYTHIA8DIR):
 
 
 signal: $(SIGNAL_OBJS)
-	$(CXX) $(SIGNAL_OBJS) $(LFLAGS) -o $@ 
+	$(CXX) $^ $(LFLAGS) -o $@ 
+
+background: $(BACKGROUND_OBJS)
+	$(CXX) $^ $(LFLAGS) -o $@ 
 
 clean:
 	rm -rf $(GARBAGE)
