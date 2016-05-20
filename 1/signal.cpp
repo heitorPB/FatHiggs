@@ -46,8 +46,8 @@ void MyAnalysis::init() {
 	genPhotons->Branch("mother1", &mother1, "mother1/I");
 	genPhotons->Branch("mother2", &mother2, "mother2/I");
 	genPhotons->Branch("px", &px, "px/D");
-	genPhotons->Branch("py", &px, "py/D");
-	genPhotons->Branch("pz", &px, "pz/D");
+	genPhotons->Branch("py", &py, "py/D");
+	genPhotons->Branch("pz", &pz, "pz/D");
 	genPhotons->Branch("e", &e, "e/D");
 }
 
