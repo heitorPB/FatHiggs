@@ -14,22 +14,6 @@ void MyHiggs::analyze(std::string path, TTree *out_tree)
 	TTree *genParticles;
 	in_file.GetObject("gen_Particles", genParticles);
 
-	/*int pdg_id  = 0;
-	int mother1 = 0;
-	int mother2 = 0;
-	double px = 0;
-	double pz = 0;
-	double py = 0;
-	double e  = 0;*/
-
-	/*genPhotons->SetBranchAddress("pdg_id", &pdg_id);
-	genPhotons->SetBranchAddress("mother1", &mother1);
-	genPhotons->SetBranchAddress("mother2", &mother2);
-	genPhotons->SetBranchAddress("px", &px);
-	genPhotons->SetBranchAddress("py", &py);
-	genPhotons->SetBranchAddress("pz", &pz);
-	genPhotons->SetBranchAddress("e", &e);*/
-
 	Pythia8::Event *event = 0;
 	genParticles->SetBranchAddress("events", &event);
 
@@ -44,7 +28,6 @@ void MyHiggs::analyze(std::string path, TTree *out_tree)
 		//       if ok, save number of ok's, save mass in a TTree
 		std::cout << "Event: " << i << "\tSize:" << event->size() << "\n";
 	}
-	//genPhotons->Write();
-	//outFile->Close();
+
 	in_file.Close();
 }

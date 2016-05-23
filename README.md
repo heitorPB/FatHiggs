@@ -6,6 +6,10 @@ Home exam for Computing Methods for High Energy Physics at Heslinki University
 After suffering a lot to discover how to use CMSSW, I gave up and started again
 with plain Pythi8.
 
+To be possible to save Pythia8 events in a root file, i had to make the
+constructor of the class ResonanceWidhts (pythia8125/include/Pythia8/ResonanceWidths.h)
+public. I got compilation errors when it was protected.
+
 ### Signal generation
 
 TODO talk about root files structure, smearing, trigger, phase space.
