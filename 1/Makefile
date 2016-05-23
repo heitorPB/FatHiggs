@@ -8,7 +8,7 @@ BACKGROUND_SOURCE = background.cpp
 BACKGROUND_OBJS = $(addsuffix .o,$(basename $(BACKGROUND_SOURCE)))
 
 
-GARBAGE = $(wildcard $(SIGNAL_OBJS) $(BACKGROUND_OBJS) background signal *out *pcm)
+GARBAGE = $(wildcard $(SIGNAL_OBJS) $(BACKGROUND_OBJS) background signal *out *pcm *.so)
 
 
 CFLAGS = -I$(PYTHIA8DIR)/include -Wall -Wextra --std=c++11 -O2 -march=native -m64 -pedantic -fPIC `root-config --cflags`
@@ -23,7 +23,6 @@ all: $(PYTHIA8DIR)
 	@echo wololo
 	@$(MAKE) signal
 	@$(MAKE) background
-	@$(MAKE) libMyHiggs.so
 
 
 $(PYTHIA8DIR):
@@ -42,7 +41,7 @@ libMyHiggs.so: signalDct.cpp $(SIGNAL_SOURCE) pythia8Namespace.h PythiaRoot.h
 	g++ -shared -o $@ `root-config --ldflags` $(CFLAGS) -I$(ROOTSYS)/include $^
 
 background: $(BACKGROUND_OBJS)
-	$(CXX) $^ $(LFLAGS) -o $@ 
+	$(CXX) $^ signalDct.cpp -w $(CFLAGS) $(LFLAGS) -o $@ 
 
 clean:
 	rm -rf $(GARBAGE)

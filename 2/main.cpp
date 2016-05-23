@@ -19,8 +19,8 @@ int main()
 	TTree *signal_tree = new TTree("signal", "Signal Mass");
 	TTree *background_tree = new TTree("background", "Background Mass");
 
-	MyHiggs::analyze(signal_file, nullptr);
-	//MyHiggs::analyze(background_file, background_tree);
+	MyHiggs::analyze(signal_file, signal_tree);
+	MyHiggs::analyze(background_file, background_tree);
 
 	signal_tree->Write();
 	background_tree->Write();
