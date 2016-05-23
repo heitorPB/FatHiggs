@@ -7,7 +7,7 @@
 
 namespace MyHiggs
 {
-	void analyze(std::string path, TTree *out_tree);
+	void analyze(std::string path, std::string out_file);
 }
 
 
