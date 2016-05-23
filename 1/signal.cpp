@@ -25,6 +25,7 @@ private:
 	TFile *outFile;
 	TTree *genPhotons;
 
+	Event *_event;
 	int pdg_id;
 	int mother1;
 	int mother2;
@@ -42,20 +43,22 @@ void MyAnalysis::init() {
 	outFile = new TFile("signal_photons.root", "RECREATE");
 
 	genPhotons = new TTree("gen_Photons", "Photons generated");
-	genPhotons->Branch("pdg_id", &pdg_id, "pdg_id/I");
+	_event = 0;
+	genPhotons->Branch("events", &_event);
+	/*genPhotons->Branch("pdg_id", &pdg_id, "pdg_id/I");
 	genPhotons->Branch("mother1", &mother1, "mother1/I");
 	genPhotons->Branch("mother2", &mother2, "mother2/I");
 	genPhotons->Branch("px", &px, "px/D");
 	genPhotons->Branch("py", &py, "py/D");
 	genPhotons->Branch("pz", &pz, "pz/D");
-	genPhotons->Branch("e", &e, "e/D");
+	genPhotons->Branch("e", &e, "e/D");*/
 }
 
 
 void MyAnalysis::analyze(Event& event) {
 	n_events++;
 
-	for (int i = 0; i < event.size(); i++) {
+	/*for (int i = 0; i < event.size(); i++) {
 		if (22 == event[i].id()) {
 			pdg_id = event[i].id();
 			mother1 = event[i].mother1();
@@ -67,12 +70,16 @@ void MyAnalysis::analyze(Event& event) {
 
 			genPhotons->Fill();
 		}
-	}
+	}*/
+
+	_event = &event;
+	genPhotons->Fill();
 }
 
 
 void MyAnalysis::finish() {
 	genPhotons->Write();
+	genPhotons->ls();
 	outFile->Close();
 }
 

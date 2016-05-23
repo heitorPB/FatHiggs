@@ -8,7 +8,7 @@ BACKGROUND_SOURCE = background.cpp
 BACKGROUND_OBJS = $(addsuffix .o,$(basename $(BACKGROUND_SOURCE)))
 
 
-GARBAGE = $(wildcard $(SIGNAL_OBJS) $(BACKGROUND_OBJS) background signal *out)
+GARBAGE = $(wildcard $(SIGNAL_OBJS) $(BACKGROUND_OBJS) background signal *out *pcm)
 
 
 CFLAGS = -I$(PYTHIA8DIR)/include -Wall -Wextra --std=c++11 -O2 -march=native -m64 -pedantic -fPIC `root-config --cflags`
@@ -29,12 +29,13 @@ $(PYTHIA8DIR):
 	@wget -nv $(PYTHIA8URL)
 	@tar xf $(PYTHIA8FILE)
 	@rm $(PYTHIA8FILE)
-	@cd $(PYTHIA8DIR) && ./configure --enable-64bit --cxx-common='-O2 -march=native -m64 -ansi -pedantic -W -Wall -Wshadow -fPIC' #--with-root
+	@cd $(PYTHIA8DIR) && ./configure --enable-64bit --enable-shared --cxx-common='-O2 -march=native -m64 -ansi -pedantic -W -Wall -Wshadow -fPIC' --with-root=${ROOTSYS}
 	@cd $(PYTHIA8DIR) && make -j5
 
 
 signal: $(SIGNAL_OBJS)
-	$(CXX) $^ $(LFLAGS) -o $@ 
+	rootcint -f $@Dct.cpp -c -I$(PYTHIA8DIR)/include PythiaRoot.h pythia8Namespace.h
+	$(CXX) $^ $@Dct.cpp -o $@ -w $(CFLAGS) $(LFLAGS) 
 
 background: $(BACKGROUND_OBJS)
 	$(CXX) $^ $(LFLAGS) -o $@ 
