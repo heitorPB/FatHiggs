@@ -42,7 +42,7 @@ void MyAnalysis::init() {
 
 	outFile = new TFile("signal_photons.root", "RECREATE");
 
-	genPhotons = new TTree("gen_Photons", "Photons generated");
+	genPhotons = new TTree("gen_Particles", "Particles generated");
 	_event = 0;
 	genPhotons->Branch("events", &_event);
 	/*genPhotons->Branch("pdg_id", &pdg_id, "pdg_id/I");

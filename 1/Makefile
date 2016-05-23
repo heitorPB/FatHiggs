@@ -23,6 +23,7 @@ all: $(PYTHIA8DIR)
 	@echo wololo
 	@$(MAKE) signal
 	@$(MAKE) background
+	@$(MAKE) libMyHiggs.so
 
 
 $(PYTHIA8DIR):
@@ -36,6 +37,9 @@ $(PYTHIA8DIR):
 signal: $(SIGNAL_OBJS)
 	rootcint -f $@Dct.cpp -c -I$(PYTHIA8DIR)/include PythiaRoot.h pythia8Namespace.h
 	$(CXX) $^ $@Dct.cpp -o $@ -w $(CFLAGS) $(LFLAGS) 
+
+libMyHiggs.so: signalDct.cpp $(SIGNAL_SOURCE) pythia8Namespace.h PythiaRoot.h
+	g++ -shared -o $@ `root-config --ldflags` $(CFLAGS) -I$(ROOTSYS)/include $^
 
 background: $(BACKGROUND_OBJS)
 	$(CXX) $^ $(LFLAGS) -o $@ 

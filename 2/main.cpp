@@ -16,9 +16,18 @@ int main()
 {
 	TFile *out_file = new TFile("myHiggs_mass.root", "RECREATE");
 
-	MyHiggs::analyze(signal_file, nullptr);
-	MyHiggs::analyze(background_file, nullptr);
+	TTree *signal_tree = new TTree("signal", "Signal Mass");
+	TTree *background_tree = new TTree("background", "Background Mass");
 
+	MyHiggs::analyze(signal_file, nullptr);
+	//MyHiggs::analyze(background_file, background_tree);
+
+	signal_tree->Write();
+	background_tree->Write();
+
+	delete signal_tree;
+	delete background_tree;
 	delete out_file;
+
 	return 0;
 }

@@ -6,36 +6,45 @@
 
 #include <iostream>
 
+#include "Pythia8/Pythia.h"
+
 void MyHiggs::analyze(std::string path, TTree *out_tree)
 {
 	TFile in_file(path.c_str());
-	TTree *genPhotons;
-	in_file.GetObject("gen_Photons", genPhotons);
+	TTree *genParticles;
+	in_file.GetObject("gen_Particles", genParticles);
 
-	int pdg_id  = 0;
+	/*int pdg_id  = 0;
 	int mother1 = 0;
 	int mother2 = 0;
 	double px = 0;
 	double pz = 0;
 	double py = 0;
-	double e  = 0;
+	double e  = 0;*/
 
-	genPhotons->SetBranchAddress("pdg_id", &pdg_id);
+	/*genPhotons->SetBranchAddress("pdg_id", &pdg_id);
 	genPhotons->SetBranchAddress("mother1", &mother1);
 	genPhotons->SetBranchAddress("mother2", &mother2);
 	genPhotons->SetBranchAddress("px", &px);
 	genPhotons->SetBranchAddress("py", &py);
 	genPhotons->SetBranchAddress("pz", &pz);
-	genPhotons->SetBranchAddress("e", &e);
+	genPhotons->SetBranchAddress("e", &e);*/
 
-	for (long long i = 0; i < genPhotons->GetEntries(); i++) {
-		genPhotons->GetEntry(i);
+	Pythia8::Event *event = 0;
+	genParticles->SetBranchAddress("events", &event);
+
+	TLorentzVector photon1(0, 0, 0, 0);
+	TLorentzVector photon2(0, 0, 0, 0);
+
+	for (long long i = 0; i < genParticles->GetEntries(); i++) {
+		genParticles->GetEntry(i);
 
 		// TODO: get 2 highest PT
 		// TODO: check condition
 		//       if ok, save number of ok's, save mass in a TTree
-	//	genPhotons->Fill();
+		std::cout << "Event: " << i << "\tSize:" << event->size() << "\n";
 	}
 	//genPhotons->Write();
 	//outFile->Close();
+	in_file.Close();
 }
