@@ -22,23 +22,19 @@ public:
 	void finish();
 private:
 	unsigned int n_events;
+	unsigned int passed_trigger;
+
 	TFile *outFile;
 	TTree *genPhotons;
 
 	Event *_event;
-	int pdg_id;
-	int mother1;
-	int mother2;
-	double px;
-	double py;
-	double pz;
-	double e;
 };
 
 
 void MyAnalysis::init() {
 	// Initialize counter for number of events.
 	n_events = 0;
+	passed_trigger = 0;
 
 	outFile = new TFile("signal_photons.root", "RECREATE");
 
@@ -50,9 +46,25 @@ void MyAnalysis::init() {
 
 void MyAnalysis::analyze(Event& event) {
 	n_events++;
+	passed_trigger = 0;
 
-	_event = &event;
-	genPhotons->Fill();
+	// TODO smearing
+
+	// trigger
+	for (int i = 1; i < event.size(); i++)
+		if (25 == event[i].id())
+			for (auto& daughter: event[i].daughterList())
+				if (22 == event[daughter].id())
+					if ((std::abs(event[daughter].eta()) < 2.5) && (event[daughter].pT() > 50.))
+						passed_trigger++;
+
+	if (2 == passed_trigger) {
+		_event = &event;
+		genPhotons->Fill();
+		// TODO save number of events passed trigger
+	}
+
+	//std::cout << "event: " << n_events << "\tpassed trigger: " << passed_trigger << "\n";
 }
 
 
