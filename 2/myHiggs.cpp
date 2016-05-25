@@ -22,9 +22,12 @@ void MyHiggs::analyze(std::string in_path, std::string out_file)
 	genParticles->SetBranchAddress("events", &event);
 
 	// temporary place to save the masses.
-	// I couldn't make it save in another file while it 
+	// I couldn't make it save in another file while it
 	// reads in_file.root
 	std::vector<double> mass;
+	double temp;
+	// output mass in another root file
+	std::string tree_name = in_path.substr(5, in_path.size() - 18);
 
 	// loop over events
 	for (long long i = 0; i < genParticles->GetEntries(); i++) {
@@ -62,10 +65,13 @@ void MyHiggs::analyze(std::string in_path, std::string out_file)
 
 		// TODO: check condition
 		//       if ok, save number of ok's, save mass in a TTree
-		if (1 == nPhotonsSelected) {
-			double temp = (photon1 + photon2).M();
+		if ((1 == nPhotonsSelected) && ("signal" == tree_name)) {
+			temp = (photon1 + photon2).M();
 			mass.push_back(temp);
 			//std::cout << in_path << " M: " << temp << "\n";
+		} else if ("background" == tree_name) {
+			temp = (photon1 + photon2).M();
+			mass.push_back(temp);
 		}
 
 		/*std::cout << "Event: " << i << ""
@@ -76,9 +82,6 @@ void MyHiggs::analyze(std::string in_path, std::string out_file)
 	}
 
 	in_file.Close();
-
-	// output mass in another root file
-	std::string tree_name = in_path.substr(5, in_path.size() - 18);
 
 	TFile result_file(out_file.c_str(), "UPDATE");
 	TTree *out_tree = new TTree(tree_name.c_str(), tree_name.c_str());
