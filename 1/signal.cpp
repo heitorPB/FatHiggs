@@ -2,6 +2,7 @@
 // ROOT
 #include "TTree.h"
 #include "TFile.h"
+#include "TNtuple.h"
 
 
 using namespace Pythia8;
@@ -19,10 +20,11 @@ public:
 	void analyze(Event& event);
 
 	// Show final results.
-	void finish();
+	void finish(Pythia& pythia);
 private:
 	unsigned int n_events;
 	unsigned int passed_trigger;
+	unsigned int events_passed_trigger;
 
 	TFile *outFile;
 	TTree *genPhotons;
@@ -31,10 +33,12 @@ private:
 };
 
 
-void MyAnalysis::init() {
+void MyAnalysis::init()
+{
 	// Initialize counter for number of events.
 	n_events = 0;
 	passed_trigger = 0;
+	events_passed_trigger = 0;
 
 	outFile = new TFile("signal_photons.root", "RECREATE");
 
@@ -44,11 +48,10 @@ void MyAnalysis::init() {
 }
 
 
-void MyAnalysis::analyze(Event& event) {
+void MyAnalysis::analyze(Event& event)
+{
 	n_events++;
 	passed_trigger = 0;
-
-	// TODO smearing
 
 	// trigger
 	for (int i = 1; i < event.size(); i++)
@@ -57,16 +60,28 @@ void MyAnalysis::analyze(Event& event) {
 				passed_trigger++;
 
 	if (passed_trigger > 1) {
+		events_passed_trigger++;
 		_event = &event;
 		genPhotons->Fill();
-		// TODO save number of events passed trigger
 	}
 
-	std::cout << "event: " << n_events << "\tpassed trigger: " << passed_trigger << "\n";
+	std::cout << "Event: " << n_events << "\tphotons passed trigger: " << passed_trigger << "\n";
 }
 
 
-void MyAnalysis::finish() {
+void MyAnalysis::finish(Pythia& pythia)
+{
+	TNtuple info("info", "info",
+	             "TotalEvents:EventsPassedTrigger:TriggerEfficiency:TotalCrossSection");
+	float total, triggered, xsec;
+
+	total = n_events;
+	triggered = events_passed_trigger;
+	xsec = pythia.info.sigmaGen();
+
+	info.Fill(total, triggered, triggered / total, xsec);
+	info.Write();
+
 	genPhotons->Write();
 	genPhotons->ls();
 	outFile->Close();
@@ -127,7 +142,7 @@ int main(/*int argc, char* argv[]*/)
 	// Final statistics.
 	pythia.stat();
 
-	myAnalysis.finish();
+	myAnalysis.finish(pythia);
 
 	return 0;
 }
