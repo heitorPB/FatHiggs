@@ -52,19 +52,17 @@ void MyAnalysis::analyze(Event& event) {
 
 	// trigger
 	for (int i = 1; i < event.size(); i++)
-		if (25 == event[i].id())
-			for (auto& daughter: event[i].daughterList())
-				if (22 == event[daughter].id())
-					if ((std::abs(event[daughter].eta()) < 2.5) && (event[daughter].pT() > 50.))
-						passed_trigger++;
+		if (22 == event[i].id())
+			if ((std::abs(event[i].eta()) < 2.5) && (event[i].pT() > 60.))
+				passed_trigger++;
 
-	if (2 == passed_trigger) {
+	if (passed_trigger > 1) {
 		_event = &event;
 		genPhotons->Fill();
 		// TODO save number of events passed trigger
 	}
 
-	//std::cout << "event: " << n_events << "\tpassed trigger: " << passed_trigger << "\n";
+	std::cout << "event: " << n_events << "\tpassed trigger: " << passed_trigger << "\n";
 }
 
 
@@ -78,7 +76,7 @@ void MyAnalysis::finish() {
 int main(/*int argc, char* argv[]*/)
 {
 	Pythia pythia;
-	pythia.readString("Main:numberOfEvents = 1000");
+	pythia.readString("Main:numberOfEvents = 3000");
 	pythia.readString("Main:timesAllowErrors = 100");
 	// print message every n events
 	pythia.readString("Next:numberCount = 1000");

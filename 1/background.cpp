@@ -22,23 +22,19 @@ public:
 	void finish();
 private:
 	unsigned int n_events;
+	unsigned int passed_trigger;
+
 	TFile *outFile;
 	TTree *genPhotons;
 
 	Event *_event;
-	int pdg_id;
-	int mother1;
-	int mother2;
-	double px;
-	double py;
-	double pz;
-	double e;
 };
 
 
 void MyAnalysis::init() {
 	// Initialize counter for number of events.
 	n_events = 0;
+	passed_trigger = 0;
 
 	outFile = new TFile("background_photons.root", "RECREATE");
 
@@ -50,9 +46,20 @@ void MyAnalysis::init() {
 
 void MyAnalysis::analyze(Event& event) {
 	n_events++;
+	passed_trigger = 0;
 
-	_event = &event;
-	genPhotons->Fill();
+	// trigger
+	for (int i = 1; i < event.size(); i++)
+		if (22 == event[i].id())
+			if ((std::abs(event[i].eta()) < 2.5) && (event[i].pT() > 60.))
+				passed_trigger++;
+
+	if (passed_trigger > 1) {
+		_event = &event;
+		genPhotons->Fill();
+	}
+
+	std::cout << "Event: " << n_events << "\t trigger: " << passed_trigger << "\n";
 }
 
 
@@ -66,7 +73,7 @@ void MyAnalysis::finish() {
 int main(/*int argc, char* argv[]*/)
 {
 	Pythia pythia;
-	pythia.readString("Main:numberOfEvents = 1000");
+	pythia.readString("Main:numberOfEvents = 100000");
 	pythia.readString("Main:timesAllowErrors = 100");
 	// print message every n events
 	pythia.readString("Next:numberCount = 1000");
@@ -86,6 +93,7 @@ int main(/*int argc, char* argv[]*/)
 	pythia.readString("PromptPhoton:ffbar2gammagamma = on");
 	// g g -> gamma gamma
 	pythia.readString("PromptPhoton:gg2gammagamma = on");
+	// phase space cut
 	pythia.readString("PhaseSpace:mHatMin = 500");
 
 	// Initialization.
