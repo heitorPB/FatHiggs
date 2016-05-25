@@ -91,7 +91,7 @@ void MyAnalysis::finish(Pythia& pythia)
 int main(/*int argc, char* argv[]*/)
 {
 	Pythia pythia;
-	pythia.readString("Main:numberOfEvents = 10000");
+	pythia.readString("Main:numberOfEvents = 100000");
 	pythia.readString("Main:timesAllowErrors = 100");
 	// print message every n events
 	pythia.readString("Next:numberCount = 1000");
@@ -112,7 +112,8 @@ int main(/*int argc, char* argv[]*/)
 	// g g -> gamma gamma
 	pythia.readString("PromptPhoton:gg2gammagamma = on");
 	// phase space cut
-	pythia.readString("PhaseSpace:mHatMin = 500");
+	pythia.readString("PhaseSpace:mHatMin = 400");
+	pythia.readString("PhaseSpace:mHatMax = 1100");
 
 	// Initialization.
 	pythia.init();

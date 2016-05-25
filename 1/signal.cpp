@@ -91,7 +91,7 @@ void MyAnalysis::finish(Pythia& pythia)
 int main(/*int argc, char* argv[]*/)
 {
 	Pythia pythia;
-	pythia.readString("Main:numberOfEvents = 3000");
+	pythia.readString("Main:numberOfEvents = 10000");
 	pythia.readString("Main:timesAllowErrors = 100");
 	// print message every n events
 	pythia.readString("Next:numberCount = 1000");

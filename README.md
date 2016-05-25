@@ -39,7 +39,8 @@ To generate the background, I am using the following Pythia settings:
 
 * PromptPhoton:ffbar2gammagamma = on
 * PromptPhoton:gg2gammagamma = on
-* PhaseSpace:mHatMin = 500
+* PhaseSpace:mHatMin = 400
+* PhaseSpace:mHatMax = 1100
 
 
 TODO talk about smearing, phase space. Pythia8+ROOT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -50,6 +51,7 @@ TODO talk about smearing, phase space. Pythia8+ROOT AAAAAAAAAAAAAAAAAAAAAAAAAAAA
 talk about structure of code. Random comments.
 for background, ignoring the selection.
 
+selection for the bg: pt2 > 30 to get rid of peak around 0.
 
 ## Histogram (3)
 
@@ -60,7 +62,6 @@ for background, ignoring the selection.
 
 - [ ] check if higgs width is really changed in ex 1.a
 - [ ] set crosssection in ex 1
-
 - [ ] smear momenta
 - [x] add trigger
 - [ ] limit phase space
@@ -72,8 +73,8 @@ for background, ignoring the selection.
 ### 2
 
 - [ ] check if units from pythia8 and root are the same, when setting TLorentzVector(pythia::particle.4momentum)
-- [ ] get number of events passing selection
-    - [ ] save it somewhere
+- [x] get number of events passing selection
+    - [x] save it somewhere
 
 
 ### 3
@@ -87,6 +88,11 @@ for background, ignoring the selection.
     - [ ] explain structure of code
     - [ ] explain how to run
     - [ ] explain results
+        - [ ] trigger efficiency
+        - [ ] events passing selection
+        - [ ] calculate number of events for luminosity of 100 / fb
+        - [ ] estimate statistical significance
+        - [ ] can we trust this results?
     - [ ] general comments
 
 
@@ -100,4 +106,4 @@ for background, ignoring the selection.
 ## Questions
 
 * 25:onIfAny or 24:onIfMatch or 25:onIfOnly?
-* Why pythia is saveing 2 trees in the root files?
+* Why pythia is saving 2 trees in the root files?
