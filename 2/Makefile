@@ -9,7 +9,7 @@ LFLAGS = $(PYTHIA8DIR)/lib/libpythia8.a -Wl,-rpath $(PYTHIA8DIR)/lib -ldl `root-
 BIN = myHiggs
 DCT = signalDct_rdict.pcm
 
-GARBAGE = $(wildcard $(OBJS) $(bin) *out)
+GARBAGE = $(wildcard $(OBJS) $(BIN) *out)
 
 
 .cpp.o:
