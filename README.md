@@ -1,7 +1,7 @@
 # FatHiggs
 Home exam for Computing Methods for High Energy Physics at Heslinki University
 
-## Datasets generation
+## Datasets generation (1)
 
 After suffering a lot to discover how to use CMSSW, I gave up and started again
 with plain Pythi8.
@@ -15,9 +15,13 @@ public. I got compilation errors when it was protected.
 TODO talk about root files structure, smearing, trigger, phase space. Pythia8+ROOT
 
 
-### Data analysis
+## Data analysis (2)
 
 talk about structure of code. Random comments.
+for background, ignoring the selection.
+
+
+## Histogram (3)
 
 
 ## TODO
@@ -28,7 +32,7 @@ talk about structure of code. Random comments.
 - [ ] set crosssection in ex 1
 
 - [ ] smear momenta
-- [ ] add trigger
+- [x] add trigger
 - [ ] limit phase space
 - [x] write dataset root file
 - [ ] make pythia print the cross section somewhere (in root file?)
@@ -43,6 +47,11 @@ talk about structure of code. Random comments.
 
 
 ### 3
+
+- [ ] normalization
+- [ ] fit
+
+### 4
 
 - [ ] write readme explaining everything
     - [ ] explain structure of code
