@@ -70,14 +70,14 @@ void MyHiggs::analyze(std::string in_path, std::string out_file)
 		// TODO this part is fucking ugly...
 		// there is a weird peak near 0, we don't want it
 		temp = (photon1 + photon2).M();
-		if (temp < 200)
-			nPhotonsSelected = 0;
+		//if (temp < 200)
+		//	nPhotonsSelected = 0;
 
 		if ((1 == nPhotonsSelected) && ("signal" == tree_name)) {
 			mass.push_back(temp);
 			events_selected++;
 			//std::cout << in_path << " M: " << temp << "\n";
-		} else if (("background" == tree_name) && (temp > 200)){
+		} else if (("background" == tree_name) /*&& (temp > 200)*/){
 			mass.push_back(temp);
 			events_selected++;
 		}
