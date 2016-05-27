@@ -11,6 +11,8 @@
 //#include "TBranch.h"
 #include "TF1.h"
 #include "TMath.h"
+#include "TLatex.h"
+#include "TLegend.h"
 
 #include <iostream>
 
@@ -44,7 +46,8 @@ int main()
 	// make Canvas pretty
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
-	gStyle->SetOptFit(1111);
+	//gStyle->SetOptFit(1111);
+	gStyle->SetOptFit(0000);
 	gStyle->SetStatBorderSize(0);
 	gStyle->SetStatX(.89);
 	gStyle->SetStatY(.89);
@@ -132,12 +135,39 @@ int main()
 	signal_histo.Sumw2();
 	signal_histo.Add(&bg, -1);
 
-	histo.SetMinimum(-10);
+	histo.SetMinimum(-90);
 
 	histo.Draw("e");
 	signal_histo.Draw("SAME");
 	signal.Draw("SAME");
 	bg.Draw("SAME");
+
+	// significance
+	double Ns, Nb;
+	Ns = signal_histo.Integral("width");
+	Nb = histo.Integral("width") - Ns;
+
+	// legend and texts
+	TLegend legend(0.5, 0.89, 0.89, 0.7);
+	legend.SetTextSize(0.02);
+	legend.SetBorderSize(0);
+	legend.SetTextFont(62);
+
+	legend.AddEntry("histo", "Data", "LPE");
+	char data_txt[100];
+	std::sprintf(data_txt, "Signal + Bkg fit (m_H = %.1f GeV)", param[1]);
+	legend.AddEntry("data", data_txt, "L");
+	legend.AddEntry("bg", "Bkg (4th order polynomial)");
+	legend.Draw("SAME");
+
+	char text_significance[100];
+	std::sprintf(text_significance, "#frac{N_{S}}{#sqrt{N_{B}}} = %.2f", Ns / std::sqrt(Nb));
+	TLatex latex_significance(620, 666, text_significance);
+	latex_significance.SetTextSize(0.02);
+	latex_significance.Draw("SAME");
+
+	TLatex text(750, 666, "H#rightarrow#gamma#gamma");
+	text.Draw("SAME");
 
 	canvas.Print("FatHiggs.pdf");
 	canvas.Print("FatHiggs.png");

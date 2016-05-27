@@ -65,9 +65,12 @@ trigger efficiency, total cross section and the number of selected events.
 ## Histogram (3)
 
 The plot is made with the sum of the signal and the background. After this
-histogram is made, I fit a function BreitWidger + 4th order polynomial. From
+histogram is made, I fit a function BreitWigner + 4th order polynomial. From
 the parameters of the fit, I extract the signal. The solid blue line is the
-fit of background + signal. The dashed line is the polynomial only.
+fit of background + signal. The dashed blue line is the polynomial only.
+The dashed red line is the Breit Wigner with the parameters given by the fit.
+The signal *data* is calculated as the histogram points subtracted the
+polynomial fit.
 
 
 ## Compiling and Running
@@ -79,30 +82,46 @@ To compile the code, use the Makefile in each folder:
 
 * for datasetes generation (it will take a long time to run):
 
+```
     cd 1/
     make
     ./signal
     ./background
+```
 
 * for data anaylsis:
 
+```
     cd 2/
     make
     ./myHiggs
+```
 
 * for the histogram:
 
+```
     cd 3/
     make
+```
 
 
 ## Results
 
-### Trigger Efficiency
+* Trigger Efficiency
 
-### Selection of events
+  The trigger efficiency for the signal is 92% and for the background is 36%.
 
-### Mass and significance
+* Selection of events
+
+  Of the signal events that passed the trigger, 84% passed the selection.
+
+  There was no selection for background.
+
+* Mass and significance
+
+  The mean of the Breit Wigner fit is 746.8 GeV with a significance of 3.57
+
+
 
 
 ## Questions
@@ -148,13 +167,13 @@ To compile the code, use the Makefile in each folder:
 ### 4
 
 - [ ] write readme explaining everything
-    - [z] explain structure of code
+    - [x] explain structure of code
     - [x] explain how to run
     - [ ] explain/comment results
-        - [ ] trigger efficiency
-        - [ ] events passing selection
+        - [x] trigger efficiency
+        - [x] events passing selection
         - [ ] calculate number of events for luminosity of 100 / fb
-        - [ ] estimate statistical significance
+        - [x] estimate statistical significance
         - [ ] can we trust this results?
     - [ ] general comments
 
