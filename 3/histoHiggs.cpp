@@ -1,4 +1,5 @@
 // based on https://root.cern.ch/root/htmldoc/guides/primer/ROOTPrimer.html
+// and also http://hadron.physics.fsu.edu/~skpark/document/ROOT/RootLecture/RootLecture290305.pdf
 // this code is ugly. Sorry.
 
 #include "TFile.h"
@@ -17,8 +18,8 @@
 // luminosity in fb^-1
 const float lumi = 100.;
 // limits for the histo and fit
-const float xmin = 650;
-const float xmax = 850;
+const float xmin = 610;
+const float xmax = 950;
 const unsigned int bins = 50;
 
 
@@ -39,7 +40,7 @@ double the_gausppar(double* vars, double* pars)
 
 int main()
 {
-	TCanvas canvas("plot", "Higgs", 666, 666);
+	TCanvas canvas("plot", "Higgs", 1000, 1000);
 	// make Canvas pretty
 	gStyle->SetOptTitle(0);
 	gStyle->SetOptStat(0);
@@ -73,7 +74,7 @@ int main()
 
 
 	// make histo and fill entries (bg + sig)
-	TH1D histo("histo", "Higgs; Mass (GeV); normalized cross section", bins , xmin, xmax);
+	TH1D histo("histo", "Higgs; M_{#gamma#gamma} (GeV); normalized cross section", bins , xmin, xmax);
 	histo.SetMarkerStyle(8);
 
 
@@ -103,22 +104,25 @@ int main()
 	TF1 signal("signal", "[0] * TMath::BreitWigner(x, [1], [2])", xmin, xmax);
 	format_line(&signal, kRed, 2);
 
-	TF1 bg("bg", "pol0(0) + expo(1)", xmin, xmax);
+	//TF1 bg("bg", "pol0(0) + expo(1)", xmin, xmax);
+	TF1 bg("bg", "pol4(0)", xmin, xmax);
 	format_line(&bg, kBlue, 2);
 
 	//TF1 data("data", "gaus(0) + pol0(3) + expo(4)", xmin, xmax);
-	TF1 data("data", "[0] * TMath::BreitWigner(x, [1], [2]) + pol0(3) + expo(4)", xmin, xmax);
+	//TF1 data("data", "[0] * TMath::BreitWigner(x, [1], [2]) + pol0(3) + expo(4)", xmin, xmax);
+	TF1 data("data", "[0] * TMath::BreitWigner(x, [1], [2]) + pol4(3)", xmin, xmax);
 	format_line(&data, kBlue, 1);
 
-	data.SetParNames("Strenght", "Mean", "Sigma", "a1", "a2", "a3");
-	data.SetParameters(150, 740, 20, 126, 3, 0);
+	data.SetParNames("Strenght", "Mean", "Sigma");
+	data.SetParameters(1500, 760, 30, 2500, -50, 0, 0, 0);
 	data.SetParLimits(0, 70, 3800);
-	data.SetParLimits(1, 680, 780);
-	data.SetParLimits(2, 0.1, 50);
+	//data.SetParLimits(1, 700, 750);
+	data.SetParLimits(1, 670, 800);
+	data.SetParLimits(2, 1.1, 100);
 
 	histo.Fit("data", "IM", "", xmin, xmax);
 
-	double param[6];
+	double param[8];
 
 	data.GetParameters(&param[0]);
 	signal.SetParameters(&param[0]);
@@ -136,5 +140,6 @@ int main()
 	bg.Draw("SAME");
 
 	canvas.Print("FatHiggs.pdf");
+	canvas.Print("FatHiggs.png");
 	return 0;
 }

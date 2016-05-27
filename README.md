@@ -1,6 +1,8 @@
 # FatHiggs
 Home exam for Computing Methods for High Energy Physics at Helsinki University
 
+![My Higgs](3/FatHiggs.png)
+
 
 ## Datasets generation (1)
 
@@ -62,6 +64,10 @@ trigger efficiency, total cross section and the number of selected events.
 
 ## Histogram (3)
 
+The plot is made with the sum of the signal and the background. After this
+histogram is made, I fit a function BreitWidger + 4th order polynomial. From
+the parameters of the fit, I extract the signal.
+
 
 ## Questions
 
@@ -79,7 +85,8 @@ trigger efficiency, total cross section and the number of selected events.
 ### 1
 
 - [x] check if higgs width is really changed in ex 1.a
-- [ ] set crosssection in ex 1
+- [x] set crosssection in ex 1
+    * there is no need for this
 - [x] smear momenta
     - [x] check for const references in event[i]
 - [x] add trigger
@@ -99,6 +106,8 @@ trigger efficiency, total cross section and the number of selected events.
 
 - [x] normalization
 - [x] fit
+- [ ] add pretty texts
+
 
 ### 4
 
