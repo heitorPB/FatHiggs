@@ -21,6 +21,7 @@ LFLAGS = $(PYTHIA8DIR)/lib/libpythia8.a -Wl,-rpath $(PYTHIA8DIR)/lib -ldl `root-
 
 all: $(PYTHIA8DIR)
 	@echo wololo
+	@$(MAKE) $(PYTHIA8DIR)
 	@$(MAKE) signal
 	@$(MAKE) background
 
@@ -29,6 +30,7 @@ $(PYTHIA8DIR):
 	@wget -nv $(PYTHIA8URL)
 	@tar xf $(PYTHIA8FILE)
 	@rm $(PYTHIA8FILE)
+	@patch -p0 -i WithRoot.patch
 	@cd $(PYTHIA8DIR) && ./configure --enable-64bit --enable-shared --cxx-common='-O2 -march=native -m64 -ansi -pedantic -W -Wall -Wshadow -fPIC' --with-root=${ROOTSYS}
 	@cd $(PYTHIA8DIR) && make -j5
 

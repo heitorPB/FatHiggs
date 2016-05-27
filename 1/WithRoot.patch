@@ -1,0 +1,28 @@
+diff -crB pythia8215-orig/include/Pythia8/ResonanceWidths.h pythia8215/include/Pythia8/ResonanceWidths.h
+*** pythia8215-orig/include/Pythia8/ResonanceWidths.h	2016-05-27 15:43:27.322655151 +0300
+--- pythia8215/include/Pythia8/ResonanceWidths.h	2016-05-27 15:44:42.770022118 +0300
+***************
+*** 72,82 ****
+    double widthChan(double mHatIn, int idOutFlav1, int idOutFlav2) {
+      return width( 1, mHatIn, 0, false, false, idOutFlav1, idOutFlav2);}
+  
+- protected:
+- 
+    // Constructor.
+    ResonanceWidths() {}
+  
+    // Constants: could only be changed in the code itself.
+    static const int    NPOINT;
+    static const double MASSMIN, MASSMARGIN;
+--- 72,82 ----
+    double widthChan(double mHatIn, int idOutFlav1, int idOutFlav2) {
+      return width( 1, mHatIn, 0, false, false, idOutFlav1, idOutFlav2);}
+  
+    // Constructor.
+    ResonanceWidths() {}
+  
++ protected:
++ 
+    // Constants: could only be changed in the code itself.
+    static const int    NPOINT;
+    static const double MASSMIN, MASSMARGIN;

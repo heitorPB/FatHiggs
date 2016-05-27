@@ -14,6 +14,8 @@ public. I got compilation errors when it was protected.
 The Makefile downloads Pythia8 and apply the patch to make it work with root.
 It also creates two binaries: signal and background. Each one produces a root file.
 
+Smearing of the momenta is done only for photons, before the trigger.
+
 The events are only saved if there are at least two photons with pseudorapidity < 2.5
 and transverse momenta > 60 GeV/c.
 
@@ -43,9 +45,6 @@ To generate the background, I am using the following Pythia settings:
 * PhaseSpace:mHatMax = 1000
 
 
-TODO talk about smearing, phase space. Pythia8+ROOT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
-
 ## Data analysis (2)
 
 talk about structure of code. Random comments.
@@ -56,15 +55,25 @@ selection for the bg: pt2 > 30 to get rid of peak around 0.
 ## Histogram (3)
 
 
+## Questions
+
+* 25:onIfAny or 24:onIfMatch or 25:onIfOnly?
+* Why pythia is saving 2 trees in the root files?
+* Why I have a nice peak of mass near zero?
+* Normalization uses the number of events that passed the trigger?
+* status == 1 produces no photons. (?)
+
+
 ## TODO
 
 ### 1
 
 - [ ] check if higgs width is really changed in ex 1.a
 - [ ] set crosssection in ex 1
-- [ ] smear momenta
+- [x] smear momenta
+    - [ ] check for const references in event[i]
 - [x] add trigger
-- [ ] limit phase space
+- [x] limit phase space
 - [x] write dataset root file
 - [x] make pythia print the cross section somewhere (in root file?)
 - [x] save trigger efficiency somewhere (in root file?)
@@ -78,8 +87,8 @@ selection for the bg: pt2 > 30 to get rid of peak around 0.
 
 ### 3
 
-- [ ] normalization
-- [ ] fit
+- [x] normalization
+- [x] fit
 
 ### 4
 
@@ -99,16 +108,7 @@ selection for the bg: pt2 > 30 to get rid of peak around 0.
 
 - [ ] get rid of useless output
 - [x] check photon.status == 1 somewhere
-- [ ] make patch for pythia to work properly
+- [x] make patch for pythia to work properly
 - [ ] check if units from pythia8 and root are the same:
     - [ ] (2): TLorentzVector(pythia::particle.4momentum)
-    - [ ] (3): in the crosssections
-
-
-## Questions
-
-* 25:onIfAny or 24:onIfMatch or 25:onIfOnly?
-* Why pythia is saving 2 trees in the root files?
-* Why I have a nice peak of mass near zero?
-* Normalization uses the number of events that passed the trigger?
-* status == 1 produces no photons. (?)
+    - [x] (3): in the crosssections
