@@ -49,7 +49,8 @@ void MyHiggs::analyze(std::string in_path, std::string out_file)
 				nPhotons++;
 
 				// get 2 highest PT photons
-				if (event->at(p).pT() > photon2.Pt()) {
+				if ((event->at(p).pT() > photon2.Pt()) && (event->at(p).isFinal())) {
+					//std::cout << "Status: " << event->at(p).status() << "\n";
 					photon2.SetPx(event->at(p).px());
 					photon2.SetPy(event->at(p).py());
 					photon2.SetPz(event->at(p).pz());
@@ -115,7 +116,7 @@ void MyHiggs::analyze(std::string in_path, std::string out_file)
 
 	for (auto p: mass) {
 		m = p;
-		std::cout << tree_name << " M: " << m << "\n";
+		//std::cout << tree_name << " M: " << m << "\n";
 		out_tree->Fill();
 	}
 
