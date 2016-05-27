@@ -1,5 +1,5 @@
 # FatHiggs
-Home exam for Computing Methods for High Energy Physics at Heslinki University
+Home exam for Computing Methods for High Energy Physics at Helsinki University
 
 
 ## Datasets generation (1)
@@ -39,8 +39,8 @@ To generate the background, I am using the following Pythia settings:
 
 * PromptPhoton:ffbar2gammagamma = on
 * PromptPhoton:gg2gammagamma = on
-* PhaseSpace:mHatMin = 400
-* PhaseSpace:mHatMax = 1100
+* PhaseSpace:mHatMin = 500
+* PhaseSpace:mHatMax = 1000
 
 
 TODO talk about smearing, phase space. Pythia8+ROOT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -72,7 +72,6 @@ selection for the bg: pt2 > 30 to get rid of peak around 0.
 
 ### 2
 
-- [ ] check if units from pythia8 and root are the same, when setting TLorentzVector(pythia::particle.4momentum)
 - [x] get number of events passing selection
     - [x] save it somewhere
 
@@ -99,11 +98,17 @@ selection for the bg: pt2 > 30 to get rid of peak around 0.
 ### general
 
 - [ ] get rid of useless output
-- [ ] check photon.status == 1 somewhere
+- [x] check photon.status == 1 somewhere
 - [ ] make patch for pythia to work properly
+- [ ] check if units from pythia8 and root are the same:
+    - [ ] (2): TLorentzVector(pythia::particle.4momentum)
+    - [ ] (3): in the crosssections
 
 
 ## Questions
 
 * 25:onIfAny or 24:onIfMatch or 25:onIfOnly?
 * Why pythia is saving 2 trees in the root files?
+* Why I have a nice peak of mass near zero?
+* Normalization uses the number of events that passed the trigger?
+* status == 1 produces no photons. (?)
