@@ -18,9 +18,9 @@
 // luminosity in fb^-1
 const float lumi = 100.;
 // limits for the histo and fit
-const float xmin = 610;
+const float xmin = 600;
 const float xmax = 950;
-const unsigned int bins = 50;
+const unsigned int bins = 40;
 
 
 void format_line(TAttLine* line,int col,int sty)
@@ -69,8 +69,8 @@ int main()
 	float events_bg = row[1];
 	float bg_norm = 4.* xsect_bg * lumi / events_bg;
 
-	std::cout << events_sig << "\t" << xsect_sig << "\t" << signal_norm << "\n";
-	std::cout << events_bg << "\t" << xsect_bg << "\t" << bg_norm << "\n";
+	std::cout << "Signal: \tEventsSelected: " << events_sig << "\tCrossSection: " << xsect_sig << " fb \tNormalization: " << signal_norm << "\n";
+	std::cout << "Background:\tEventsSelected: " << events_bg << "\tCrossSection: " << xsect_bg << " fb Normalization: " << bg_norm << "\n";
 
 
 	// make histo and fill entries (bg + sig)
@@ -117,10 +117,10 @@ int main()
 	data.SetParameters(1500, 760, 30, 2500, -50, 0, 0, 0);
 	data.SetParLimits(0, 70, 3800);
 	//data.SetParLimits(1, 700, 750);
-	data.SetParLimits(1, 670, 800);
+	data.SetParLimits(1, 690, 795);
 	data.SetParLimits(2, 1.1, 100);
 
-	histo.Fit("data", "IM", "", xmin, xmax);
+	histo.Fit("data", "M", "", xmin, xmax);
 
 	double param[8];
 

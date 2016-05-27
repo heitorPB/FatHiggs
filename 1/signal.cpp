@@ -93,7 +93,7 @@ void MyAnalysis::analyze(Event& event)
 		genPhotons->Fill();
 	}
 
-	std::cout << "Event: " << n_events << "\tphotons passed trigger: " << passed_trigger << "\n";
+	//std::cout << "Event: " << n_events << "\tphotons passed trigger: " << passed_trigger << "\n";
 }
 
 
@@ -111,7 +111,7 @@ void MyAnalysis::finish(Pythia& pythia)
 	info.Write();
 
 	genPhotons->Write();
-	genPhotons->ls();
+	//genPhotons->ls();
 	outFile->Close();
 }
 
@@ -119,7 +119,7 @@ void MyAnalysis::finish(Pythia& pythia)
 int main(/*int argc, char* argv[]*/)
 {
 	Pythia pythia;
-	pythia.readString("Main:numberOfEvents = 20000");
+	pythia.readString("Main:numberOfEvents = 50000");
 	pythia.readString("Main:timesAllowErrors = 100");
 	// print message every n events
 	pythia.readString("Next:numberCount = 1000");

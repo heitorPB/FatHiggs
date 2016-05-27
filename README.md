@@ -66,7 +66,43 @@ trigger efficiency, total cross section and the number of selected events.
 
 The plot is made with the sum of the signal and the background. After this
 histogram is made, I fit a function BreitWidger + 4th order polynomial. From
-the parameters of the fit, I extract the signal.
+the parameters of the fit, I extract the signal. The solid blue line is the
+fit of background + signal. The dashed line is the polynomial only.
+
+
+## Compiling and Running
+
+This code needs a recent compiler that supports C++11 and
+[ROOT 6](https://root.cern.ch/).
+
+To compile the code, use the Makefile in each folder:
+
+* for datasetes generation (it will take a long time to run):
+
+    cd 1/
+    make
+    ./signal
+    ./background
+
+* for data anaylsis:
+
+    cd 2/
+    make
+    ./myHiggs
+
+* for the histogram:
+
+    cd 3/
+    make
+
+
+## Results
+
+### Trigger Efficiency
+
+### Selection of events
+
+### Mass and significance
 
 
 ## Questions
@@ -112,9 +148,9 @@ the parameters of the fit, I extract the signal.
 ### 4
 
 - [ ] write readme explaining everything
-    - [ ] explain structure of code
-    - [ ] explain how to run
-    - [ ] explain results
+    - [z] explain structure of code
+    - [x] explain how to run
+    - [ ] explain/comment results
         - [ ] trigger efficiency
         - [ ] events passing selection
         - [ ] calculate number of events for luminosity of 100 / fb
@@ -125,9 +161,9 @@ the parameters of the fit, I extract the signal.
 
 ### general
 
-- [ ] get rid of useless output
+- [x] get rid of useless output
 - [x] check photon.status == 1 somewhere
 - [x] make patch for pythia to work properly
-- [ ] check if units from pythia8 and root are the same:
-    - [ ] 2: TLorentzVector(pythia::particle.4momentum)
+- [z] check if units from pythia8 and root are the same:
+    - [z] 2: TLorentzVector(pythia::particle.4momentum)
     - [x] 3: in the crosssections
