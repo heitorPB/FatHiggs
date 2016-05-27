@@ -17,13 +17,14 @@
 // luminosity in fb^-1
 const float lumi = 100.;
 // limits for the histo and fit
-const float xmin = 500;
-const float xmax = 900;
+const float xmin = 650;
+const float xmax = 850;
+const unsigned int bins = 50;
 
 
 void format_line(TAttLine* line,int col,int sty)
 {
-	line->SetLineWidth(5);
+	line->SetLineWidth(3);
 	line->SetLineColor(col);
 	line->SetLineStyle(sty);
 }
@@ -57,14 +58,14 @@ int main()
 	float *row = info_in->GetArgs();
 
 	float xsect_sig = 6.2;
-	float events_sig = row[0];
+	float events_sig = row[1]; // events that passed the trigger
 	float signal_norm = xsect_sig * lumi / events_sig;
 
 	my_file.GetObject("background_info", info_in);
 	info_in->GetEntry(0);
 	row = info_in->GetArgs();
 	float xsect_bg = row[3] * 1e12; // mb to fb
-	float events_bg = row[0];
+	float events_bg = row[1];
 	float bg_norm = 4.* xsect_bg * lumi / events_bg;
 
 	std::cout << events_sig << "\t" << xsect_sig << "\t" << signal_norm << "\n";
@@ -72,8 +73,7 @@ int main()
 
 
 	// make histo and fill entries (bg + sig)
-	TH1D histo("histo", "Higgs; Mass (GeV); normalized cross section", 40, xmin, xmax);
-	//TH1D histo_bg("histo_bg", "",                                      40, xmin, xmax);
+	TH1D histo("histo", "Higgs; Mass (GeV); normalized cross section", bins , xmin, xmax);
 	histo.SetMarkerStyle(8);
 
 
@@ -96,29 +96,44 @@ int main()
 	for (long long i = 0; i < bg_tree->GetEntries(); i++) {
 		bg_tree->GetEntry(i);
 		histo.Fill(m, bg_norm);
-		//histo_bg.Fill(m, bg_norm);
 	}
 
 
-	// fit bg only
-	//histo_bg.Fit("expo");
+	//TF1 signal("signal", "gaus(0)", xmin, xmax);
+	TF1 signal("signal", "[0] * TMath::BreitWigner(x, [1], [2])", xmin, xmax);
+	format_line(&signal, kRed, 2);
 
-	// fit bg + signal
-	//TF1 signal("signal", "TMath::BreitWigner(x, 0, 1)", xmin, xmax);
-	TF1 signal("signal", "gaus", xmin, xmax);
-	TF1 bg("bg", "pol0 + expo(1)", xmin, xmax);
-	TF1 data("data", "gaus + pol0(3) + expo(4)", xmin, xmax);
+	TF1 bg("bg", "pol0(0) + expo(1)", xmin, xmax);
+	format_line(&bg, kBlue, 2);
+
+	//TF1 data("data", "gaus(0) + pol0(3) + expo(4)", xmin, xmax);
+	TF1 data("data", "[0] * TMath::BreitWigner(x, [1], [2]) + pol0(3) + expo(4)", xmin, xmax);
+	format_line(&data, kBlue, 1);
 
 	data.SetParNames("Strenght", "Mean", "Sigma", "a1", "a2", "a3");
-	data.SetParameters(50, 700, 100, 10, 6, -2);
-	histo.Fit("data");
+	data.SetParameters(150, 740, 20, 126, 3, 0);
+	data.SetParLimits(0, 70, 3800);
+	data.SetParLimits(1, 680, 780);
+	data.SetParLimits(2, 0.1, 50);
 
-	//histo.DrawClone("same");
+	histo.Fit("data", "IM", "", xmin, xmax);
 
+	double param[6];
 
+	data.GetParameters(&param[0]);
+	signal.SetParameters(&param[0]);
+	bg.SetParameters(&param[3]);
 
-	// fit bg + data
-	// plot also bg
+	TH1D signal_histo(histo);
+	signal_histo.Sumw2();
+	signal_histo.Add(&bg, -1);
+
+	histo.SetMinimum(-10);
+
+	histo.Draw("e");
+	signal_histo.Draw("SAME");
+	signal.Draw("SAME");
+	bg.Draw("SAME");
 
 	canvas.Print("FatHiggs.pdf");
 	return 0;
