@@ -127,7 +127,7 @@ To compile the code, use the Makefile in each folder:
 
 * Mass and significance
 
-  The mean of the Breit Wigner fit is 746.8 GeV with a significance of 3.57
+  The mean value of the Breit Wigner fit is 746.8 GeV with a significance of 3.57
 
 
 ## Comments
@@ -149,7 +149,7 @@ photons. It would be more realistic to also consider other channels.
 
 ## Questions
 
-I am not sure about this things:
+I am not sure about these things:
 
 * Why pythia is saving 2 trees in the dataset root files?
 * Normalization uses the number of events that passed the trigger?
