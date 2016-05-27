@@ -68,8 +68,6 @@ void MyHiggs::analyze(std::string in_path, std::string out_file)
 			}
 		}
 
-		// TODO this part is fucking ugly...
-		// there is a weird peak near 0, we don't want it
 		temp = (photon1 + photon2).M();
 		//if (temp < 200)
 		//	nPhotonsSelected = 0;
@@ -121,7 +119,7 @@ void MyHiggs::analyze(std::string in_path, std::string out_file)
 	}
 
 	out_tree->Write();
-	out_tree->ls();
+	//out_tree->ls();
 
 	std::string info_name = tree_name + "_info";
 	TNtuple info_out(info_name.c_str(), info_name.c_str(),
@@ -129,7 +127,7 @@ void MyHiggs::analyze(std::string in_path, std::string out_file)
 	info_out.Fill(total_events, events_passed_trigger, trigger_efficiency, total_cross_section, events_selected);
 	info_out.Write();
 
-	std::cout << tree_name << ":\tTotalEvents: " << total_events << "\tEventsPassedTrigger: " << events_passed_trigger << " (" << trigger_efficiency * 100. << "%)\tTotalCrossSection: " << total_cross_section << "\t EventsSelected: " << events_selected << "(" << events_selected * 100. / events_passed_trigger << ")\n";
+	std::cout << tree_name << ":\tTotalEvents: " << total_events << "\tEventsPassedTrigger: " << events_passed_trigger << " (" << trigger_efficiency * 100. << "%)\tTotalCrossSection: " << total_cross_section << "\t EventsSelected: " << events_selected << " (" << events_selected * 100. / events_passed_trigger << "%)\n";
 
 	delete out_tree;
 	result_file.Close();

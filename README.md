@@ -35,7 +35,6 @@ To generate the signal, I am using the following Pythia settings:
 * 25:onMode = off
 * 25:onIfMatch = 22 22
 
-
 ### Background generation
 
 To generate the background, I am using the following Pythia settings:
@@ -48,10 +47,18 @@ To generate the background, I am using the following Pythia settings:
 
 ## Data analysis (2)
 
-talk about structure of code. Random comments.
-for background, ignoring the selection.
+The analysis code for the signal selects events with exactly two final photons
+with transverse momenta greater than 150 GeV and 200 GeV. The 4-momenta of
+these photons are summed and the invariant mass is from this sum.
 
-selection for the bg: pt2 > 30 to get rid of peak around 0.
+For the background, there is no selection. The two photons with the highest
+transverse momentum in each event are used.
+
+This code produces another root file with the invariant mass from the signal,
+invariant mass from the background, and two NTuples, each with the total
+number of events in the simulation, the events that passed the trigger,
+trigger efficiency, total cross section and the number of selected events.
+
 
 ## Histogram (3)
 
@@ -74,7 +81,7 @@ selection for the bg: pt2 > 30 to get rid of peak around 0.
 - [x] check if higgs width is really changed in ex 1.a
 - [ ] set crosssection in ex 1
 - [x] smear momenta
-    - [ ] check for const references in event[i]
+    - [x] check for const references in event[i]
 - [x] add trigger
 - [x] limit phase space
 - [x] write dataset root file
