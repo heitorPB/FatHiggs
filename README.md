@@ -74,6 +74,11 @@ polynomial fit.
 
 The signal and background have different normalizations. The cross section for
 the signal is set to 6.2 fb. For the background, I use the value from Pythia.
+If I set the background cross section to 6.2, the final histogram looks
+perfect:
+
+![My Higgs - fake xsect](3/FatHiggs_fake_bg_xsect.png "Background cross section set to 6.2 fb")
+
 
 
 ## Compiling and Running
@@ -144,62 +149,8 @@ photons. It would be more realistic to also consider other channels.
 
 ## Questions
 
-* 25:onIfAny or 24:onIfMatch or 25:onIfOnly?
-* Why pythia is saving 2 trees in the root files?
+I am not sure about this things:
+
+* Why pythia is saving 2 trees in the dataset root files?
 * Normalization uses the number of events that passed the trigger?
-* status == 1 produces no photons. (?)
-* Why pythia reports higghs width = 239 ?
-    - Why pythia needs doForceWidth = on when I set the mWidth?
-
-
-## TODO
-
-### 1
-
-- [x] check if higgs width is really changed in ex 1.a
-- [x] set crosssection in ex 1
-    * there is no need for this
-- [x] smear momenta
-    - [x] check for const references in event[i]
-- [x] add trigger
-- [x] limit phase space
-- [x] write dataset root file
-- [x] make pythia print the cross section somewhere (in root file?)
-- [x] save trigger efficiency somewhere (in root file?)
-
-
-### 2
-
-- [x] get number of events passing selection
-    - [x] save it somewhere
-
-
-### 3
-
-- [x] normalization
-- [x] fit
-- [x] add pretty texts
-
-
-### 4
-
-- [ ] write readme explaining everything
-    - [x] explain structure of code
-    - [x] explain how to run
-    - [ ] explain/comment results
-        - [x] trigger efficiency
-        - [x] events passing selection
-        - [ ] calculate number of events for luminosity of 100 / fb
-        - [x] estimate statistical significance
-        - [x] can we trust this results?
-    - [x] general comments
-
-
-### general
-
-- [x] get rid of useless output
-- [x] check photon.status == 1 somewhere
-- [x] make patch for pythia to work properly
-- [z] check if units from pythia8 and root are the same:
-    - [z] 2: TLorentzVector(pythia::particle.4momentum)
-    - [x] 3: in the crosssections
+  I am using the total number of events.
