@@ -1,5 +1,6 @@
 // based on https://root.cern.ch/root/htmldoc/guides/primer/ROOTPrimer.html
 // and also http://hadron.physics.fsu.edu/~skpark/document/ROOT/RootLecture/RootLecture290305.pdf
+// with inspiration from: http://www.quantumdiaries.org/wp-content/uploads/2012/09/ATLASMgg.png
 // this code is ugly. Sorry.
 
 #include "TFile.h"
@@ -69,6 +70,7 @@ int main()
 	info_in->GetEntry(0);
 	row = info_in->GetArgs();
 	float xsect_bg = row[3] * 1e12; // mb to fb
+	//xsect_bg = 6.2; // this makes an awesome result, but it is wrong
 	float events_bg = row[1];
 	float bg_norm = 4.* xsect_bg * lumi / events_bg;
 
@@ -155,7 +157,7 @@ int main()
 
 	legend.AddEntry("histo", "Data", "LPE");
 	char data_txt[100];
-	std::sprintf(data_txt, "Signal + Bkg fit (m_H = %.1f GeV)", param[1]);
+	std::sprintf(data_txt, "Signal + Bkg fit (m_{H} = %.1f GeV)", param[1]);
 	legend.AddEntry("data", data_txt, "L");
 	legend.AddEntry("bg", "Bkg (4th order polynomial)");
 	legend.Draw("SAME");

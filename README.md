@@ -72,6 +72,9 @@ The dashed red line is the Breit Wigner with the parameters given by the fit.
 The signal *data* is calculated as the histogram points subtracted the
 polynomial fit.
 
+The signal and background have different normalizations. The cross section for
+the signal is set to 6.2 fb. For the background, I use the value from Pythia.
+
 
 ## Compiling and Running
 
@@ -122,13 +125,27 @@ To compile the code, use the Makefile in each folder:
   The mean of the Breit Wigner fit is 746.8 GeV with a significance of 3.57
 
 
+## Comments
+
+We can also see some other peaks in the histogram and depending on the fit
+options, I get different mean value for the Breit Wigner distribution. This
+can be improved with more events in the analysis.
+
+With a statistical significance of only 3.57, I can't convince myself of a
+discovery.
+
+To make this result more realistic, it would be interesting to simulate also
+the detector systems, instead of adding a Gausian smearing to the photon's
+momenta.
+
+The simulated background consists of only f fbar and g g decaying to two
+photons. It would be more realistic to also consider other channels.
 
 
 ## Questions
 
 * 25:onIfAny or 24:onIfMatch or 25:onIfOnly?
 * Why pythia is saving 2 trees in the root files?
-* Why I have a nice peak of mass near zero?
 * Normalization uses the number of events that passed the trigger?
 * status == 1 produces no photons. (?)
 * Why pythia reports higghs width = 239 ?
@@ -161,7 +178,7 @@ To compile the code, use the Makefile in each folder:
 
 - [x] normalization
 - [x] fit
-- [ ] add pretty texts
+- [x] add pretty texts
 
 
 ### 4
@@ -174,8 +191,8 @@ To compile the code, use the Makefile in each folder:
         - [x] events passing selection
         - [ ] calculate number of events for luminosity of 100 / fb
         - [x] estimate statistical significance
-        - [ ] can we trust this results?
-    - [ ] general comments
+        - [x] can we trust this results?
+    - [x] general comments
 
 
 ### general
