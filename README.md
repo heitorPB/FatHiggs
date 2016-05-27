@@ -30,6 +30,7 @@ To generate the signal, I am using the following Pythia settings:
 
 * HiggsSM:all = on
 * 25:m0 = 750
+* 25:doForceWidth = on
 * 25:mWidth = 45
 * 25:onMode = off
 * 25:onIfMatch = 22 22
@@ -62,13 +63,15 @@ selection for the bg: pt2 > 30 to get rid of peak around 0.
 * Why I have a nice peak of mass near zero?
 * Normalization uses the number of events that passed the trigger?
 * status == 1 produces no photons. (?)
+* Why pythia reports higghs width = 239 ?
+    - Why pythia needs doForceWidth = on when I set the mWidth?
 
 
 ## TODO
 
 ### 1
 
-- [ ] check if higgs width is really changed in ex 1.a
+- [x] check if higgs width is really changed in ex 1.a
 - [ ] set crosssection in ex 1
 - [x] smear momenta
     - [ ] check for const references in event[i]
@@ -110,5 +113,5 @@ selection for the bg: pt2 > 30 to get rid of peak around 0.
 - [x] check photon.status == 1 somewhere
 - [x] make patch for pythia to work properly
 - [ ] check if units from pythia8 and root are the same:
-    - [ ] (2): TLorentzVector(pythia::particle.4momentum)
-    - [x] (3): in the crosssections
+    - [ ] 2: TLorentzVector(pythia::particle.4momentum)
+    - [x] 3: in the crosssections

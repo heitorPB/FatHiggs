@@ -3,6 +3,8 @@
 #include "TTree.h"
 #include "TFile.h"
 #include "TNtuple.h"
+#include "TLorentzVector.h"
+#include "TRandom2.h"
 
 
 using namespace Pythia8;
@@ -30,6 +32,8 @@ private:
 	TTree *genPhotons;
 
 	Event *_event;
+
+	TRandom2 rng;
 };
 
 
@@ -39,6 +43,8 @@ void MyAnalysis::init()
 	n_events = 0;
 	passed_trigger = 0;
 	events_passed_trigger = 0;
+
+	rng.SetSeed(0);
 
 	outFile = new TFile("signal_photons.root", "RECREATE");
 
@@ -53,11 +59,33 @@ void MyAnalysis::analyze(Event& event)
 	n_events++;
 	passed_trigger = 0;
 
-	// trigger
-	for (int i = 1; i < event.size(); i++)
-		if (22 == event[i].id())
+	for (int i = 1; i < event.size(); i++) {
+		if (22 == event[i].id()) {
+			// smearing only for photons because i don't want to waste cpu
+			TLorentzVector photon;
+			photon.SetPx(event[i].px());
+			photon.SetPy(event[i].py());
+			photon.SetPz(event[i].pz());
+			photon.SetE(event[i].e());
+
+			double R = photon.Rho();
+			R = rng.Gaus(R, 0.01 * R);
+			double theta = photon.Theta();
+			theta = rng.Gaus(theta, 2./1000);
+			double phi = photon.Phi();
+			phi = rng.Gaus(phi, 2./1000);
+
+			photon.SetRho(R);
+			photon.SetTheta(theta);
+			photon.SetPhi(phi);
+
+			event[i].p(photon.Px(), photon.Py(), photon.Pz(), photon.E());
+
+			// trigger
 			if ((std::abs(event[i].eta()) < 2.5) && (event[i].pT() > 60.))
 				passed_trigger++;
+		}
+	}
 
 	if (passed_trigger > 1) {
 		events_passed_trigger++;
@@ -91,7 +119,7 @@ void MyAnalysis::finish(Pythia& pythia)
 int main(/*int argc, char* argv[]*/)
 {
 	Pythia pythia;
-	pythia.readString("Main:numberOfEvents = 10000");
+	pythia.readString("Main:numberOfEvents = 20000");
 	pythia.readString("Main:timesAllowErrors = 100");
 	// print message every n events
 	pythia.readString("Next:numberCount = 1000");
@@ -109,6 +137,7 @@ int main(/*int argc, char* argv[]*/)
 	// create Higgs
 	pythia.readString("HiggsSM:all = on");
 	pythia.readString("25:m0 = 750");
+	pythia.readString("25:doForceWidth = on");
 	pythia.readString("25:mWidth = 45");
 	pythia.readString("25:onMode = off");
 	pythia.readString("25:onIfMatch = 22 22");

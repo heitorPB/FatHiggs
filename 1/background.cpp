@@ -3,6 +3,8 @@
 #include "TTree.h"
 #include "TFile.h"
 #include "TNtuple.h"
+#include "TLorentzVector.h"
+#include "TRandom2.h"
 
 
 using namespace Pythia8;
@@ -30,6 +32,8 @@ private:
 	TTree *genPhotons;
 
 	Event *_event;
+
+	TRandom2 rng;
 };
 
 
@@ -39,6 +43,8 @@ void MyAnalysis::init()
 	n_events = 0;
 	passed_trigger = 0;
 	events_passed_trigger = 0;
+
+	rng.SetSeed(0);
 
 	outFile = new TFile("background_photons.root", "RECREATE");
 
@@ -53,11 +59,33 @@ void MyAnalysis::analyze(Event& event)
 	n_events++;
 	passed_trigger = 0;
 
-	// trigger
-	for (int i = 1; i < event.size(); i++)
-		if (22 == event[i].id())
+	for (int i = 1; i < event.size(); i++) {
+		if (22 == event[i].id()) {
+			// smearing only for photons because i don't want to waste cpu
+			TLorentzVector photon;
+			photon.SetPx(event[i].px());
+			photon.SetPy(event[i].py());
+			photon.SetPz(event[i].pz());
+			photon.SetE(event[i].e());
+
+			double R = photon.Rho();
+			R = rng.Gaus(R, 0.01 * R);
+			double theta = photon.Theta();
+			theta = rng.Gaus(theta, 2./1000);
+			double phi = photon.Phi();
+			phi = rng.Gaus(phi, 2./1000);
+
+			photon.SetRho(R);
+			photon.SetTheta(theta);
+			photon.SetPhi(phi);
+
+			event[i].p(photon.Px(), photon.Py(), photon.Pz(), photon.E());
+
+			// trigger
 			if ((std::abs(event[i].eta()) < 2.5) && (event[i].pT() > 60.))
 				passed_trigger++;
+		}
+	}
 
 	if (passed_trigger > 1) {
 		events_passed_trigger++;
@@ -112,8 +140,8 @@ int main(/*int argc, char* argv[]*/)
 	// g g -> gamma gamma
 	pythia.readString("PromptPhoton:gg2gammagamma = on");
 	// phase space cut
-	pythia.readString("PhaseSpace:mHatMin = 400");
-	pythia.readString("PhaseSpace:mHatMax = 1100");
+	pythia.readString("PhaseSpace:mHatMin = 500");
+	pythia.readString("PhaseSpace:mHatMax = 1000");
 
 	// Initialization.
 	pythia.init();
