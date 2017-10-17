@@ -1,5 +1,5 @@
 # FatHiggs
-Home exam for Computing Methods for High Energy Physics at Helsinki University
+[Home exam](Exam.pdf) for Computing Methods for High Energy Physics at Helsinki University
 
 ![My Higgs](3/FatHiggs.png)
 
